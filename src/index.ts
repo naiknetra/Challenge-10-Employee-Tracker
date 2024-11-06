@@ -1,4 +1,14 @@
 import inquirer from 'inquirer';
+import pg from 'pg';
+const { Pool } = pg;
+const pool = new Pool({
+  user: 'postgres',
+  password:'Bernerberner',
+  host:'localhost',
+  database: 'employee_tracker',
+  port: 5432
+
+});
 
 inquirer
   .prompt([
@@ -13,7 +23,15 @@ inquirer
 
     /* Pass your questions in here */
   ])
-  .then((answers) => {
-    console.log(answers)
+  .then(async (answers) => {
+    
+    if (answers.Action == 'View All Employees'){
+      const res = await pool.query('SELECT * FROM employee')
+        console.table( res.rows)
+        
+
+    }
+
+    
     // Use user feedback for... whatever!!
-  })
+    })
